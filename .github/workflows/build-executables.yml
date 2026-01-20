@@ -20,7 +20,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.13.9'
+        python-version: '3.11'  # Changed from 3.13.9 to 3.11 for stability
 
     - name: Install Python dependencies
       run: |
@@ -30,6 +30,12 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile improved_gui_pro3.py
+
+    # Fix permissions for Mac executable before uploading
+    - name: Fix MacOS Permissions
+      if: matrix.os == 'macos-latest'
+      run: |
+        chmod +x dist/improved_gui_pro3
 
     - name: Upload artifacts (Windows)
       if: matrix.os == 'windows-latest'
